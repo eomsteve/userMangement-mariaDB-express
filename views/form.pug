@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1 #{title} 양식
+  div
+    p id(email주소) : #{id}
+    p 이름 : #{firstName} 성 : #{lastName}
+    p 휴대폰 번호 : #{phoneNumber}
+    p 주소 : #{address} 
+    P 위 id: #{id} 로 인증번호를 보냈습니다. 확인 후 아래에 번호를 적어주세요
+    p 
+    form(action="/signup/verification" method="POST")  
+      input(type="text" name="num" placeholder="이곳에 인증번호를 적어주세요 :) ")
+      button(id="verti" type="submit" name="verti") 인증하기
