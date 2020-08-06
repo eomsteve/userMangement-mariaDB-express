@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser =require('cookie-parser');
 const veri = require('../../public/javascripts/codeGenerator.js');
-// const { duplicate } =require('../SDP.js');
+const { duplicate } =require('../SDP.js');
 const mailer = require('express-mailer');
 const router = express.Router();
 require('dotenv').config();
