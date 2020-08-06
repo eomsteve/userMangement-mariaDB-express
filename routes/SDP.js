@@ -35,3 +35,15 @@ exports.duplicate = (sessionId,databaseId)=>{
         }
     })
 }
+
+exports.singupStore = (fn,ln,addr,phn,id,pw,bdt) =>{
+    conn.query('CALL SIGNUP_UP(?,?,?,?,?,?,?)',[fn,ln,addr,phn,id,pw,bdt],(err,result,fields) =>{
+        try{
+            console.log(result[0]);
+            
+        }catch(err){
+            console.error(err);
+            
+        }
+    })
+}

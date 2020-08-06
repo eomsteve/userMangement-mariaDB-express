@@ -74,8 +74,6 @@ router.post('/' ,function(req, res, next) {
 router.post('/verification', function(req, res, next) {
   let temp = req.body.num;
   let confirm = req.session.signup.tempCode;
-
-  
   if(temp == confirm){
       // duplicate
       // storeSessioninfo(req.session.signup.id,)  
@@ -85,6 +83,7 @@ router.post('/verification', function(req, res, next) {
                 console.log('세션 삭제시 에러');
                 return;
             }
+            
             console.log('세션 삭제 성공');
             res.redirect('/');
         }
