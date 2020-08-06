@@ -1,9 +1,11 @@
 const mariadb = require('mariadb');
+require('dotenv').config();
+
 const pool  = mariadb.createPool({
     connectionLimit : 10,
-    host: 'localhost',
-    user: 'root',
-    pasword: 'djatjdgus1!',
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    pasword: process.env.DB_PASS,
     database: `proceduretest`,
     
 });
