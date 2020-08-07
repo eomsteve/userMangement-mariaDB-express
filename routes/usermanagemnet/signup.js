@@ -39,8 +39,10 @@ router.post('/' ,function(req, res, next) {
   let birth =req.body.birth;
   let tempCode = new veri();
   let verificationCode =  tempCode.getVerificationCode();
-  console.log(duplicate(id));
- req.session.signup={
+  
+ if(duplicate(id)==0){
+ 
+  req.session.signup={
     id: id,
     firstName: firstName,
     lastName: lastName, 
@@ -73,7 +75,10 @@ router.post('/' ,function(req, res, next) {
                         tempCode:verificationCode
                          });
    });
-   
+  }else{
+    alert('id가 중복입니다.');
+    res.redirect('/');
+  }
 
 });
 
@@ -84,25 +89,25 @@ router.post('/verification', function(req, res, next) {
    
   if(temp == confirm){
 
-      // if(!duplicate){
-      //   SIS.password = hashPassword.get_hashed_password(SIS.password).then(
-      //   sotreResult =  singupStore(SIS.firstName, SIS.lastName, SIS.address, SIS.phone, SIS.id,SIS.password,SIS.birth))    
-      //     if(singupStore==0){
-      //       req.session.destroy(
-      //         (err) =>{
-      //            if (err) {
-      //                console.log('세션 삭제시 에러');
-      //                return;
-      //            }
-      //            req.session.signup;
-      //            console.log('세션 삭제 성공');
-      //            res.redirect('/');
-      //        });
-      //     }
-      // }else{
-      //   console.error("아이디가 중복입니다. 처음부터 다시 회원가입 해 주세요");
+      if(duplicate(id) == 0){
+        SIS.password = hashPassword.get_hashed_password(SIS.password).then(
+        sotreResult =  singupStore(SIS.firstName, SIS.lastName, SIS.address, SIS.phone, SIS.id,SIS.password,SIS.birth))    
+          if(singupStore==0){
+            req.session.destroy(
+              (err) =>{
+                 if (err) {
+                     console.log('세션 삭제시 에러');
+                     return;
+                 }
+                 req.session.signup;
+                 console.log('세션 삭제 성공');
+                 res.redirect('/');
+             });
+          }
+      }else{
+        console.error("아이디가 중복입니다. 처음부터 다시 회원가입 해 주세요");
         
-      // }
+      }
     
       
   }else{
