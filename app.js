@@ -4,7 +4,6 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const sessionSignup = require('express-session');
-const sessionServer = require('express-session');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -36,11 +35,6 @@ app.use(sessionSignup({
 },
 }));
 
-app.use(sessionServer({
-  secret: 'secret',
-  resave: false,
-  saveUninitialized: true,
-}))
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

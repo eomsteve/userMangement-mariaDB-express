@@ -10,4 +10,4 @@ class HashPassword {
         return bcrypt.compareSync(plain, hash);
     }
 }
-module.exports = hashPassword;
+module.exports = HashPassword;

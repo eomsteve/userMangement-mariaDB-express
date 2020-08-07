@@ -7,9 +7,9 @@ exports.duplicate=(req, res, next)=>{
 };
 
 exports.isLoggedIn=(req,res,next)=>{
-    if(req.session.signin.nsc){
-        next();
+    if(req.session.signin.wnsc){
+        res.redirects('/');
     }else{
-        res.status(403).send('code : 0 ')
+        next();
     }
 }
