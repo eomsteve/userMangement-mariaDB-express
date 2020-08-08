@@ -92,7 +92,7 @@ router.post('/verification', function(req, res, next) {
       if(duplicate(id) == 0){
         SIS.password = hashPassword.get_hashed_password(SIS.password).then(
         sotreResult =  singupStore(SIS.firstName, SIS.lastName, SIS.address, SIS.phone, SIS.id,SIS.password,SIS.birth))    
-          if(singupStore==0){
+          if(singupStore()==0){
             req.session.destroy(
               (err) =>{
                  if (err) {
