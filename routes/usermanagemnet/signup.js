@@ -100,7 +100,7 @@ router.post('/verification', function(req, res, next) {
                      return;
                  }
                  req.session.signup;
-                 console.log('세션 삭제 성공');
+                 console.log('세션 삭제');
                  res.redirect('/');
              });
           }
