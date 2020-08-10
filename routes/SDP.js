@@ -38,16 +38,17 @@ exports.duplicate = async (id)=>{
 }
 
 exports.singupStore = async (fn,ln,addr,phn,id,pw,bdt) =>{
+    let conn = await pool.getConnection();
+    try{
+    let res = conn.query('CALL SIGN_UP(?,?,?,?,?,?,?)',[fn,ln,addr,phn,id,pw,bdt]);
+    let values = res[1][0]['@result'];
+    conn.release();
+    return values;
     
-    conn.query('CALL SIGN_UP(?,?,?,?,?,?,?)',[fn,ln,addr,phn,id,pw,bdt],(err,result,fields) =>{
-        try{
-            console.log(result[0]);
-            
-        }catch(err){
-            console.error(err);
-            
-        }
-    })
+    }catch(err){
+    console.error(err);
+    conn.release();
+    }
 }
 
 exports.signin = (id,pw) =>{
