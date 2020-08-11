@@ -82,10 +82,10 @@ router.post('/' ,async function(req, res, next){
                         tempCode:verificationCode
                          });
                         });
-  }else{
+  }else if(duplicateResult == 3){
     console.log('id중복');
     
-    res.redirect('/');
+    res.send('Id 중복!');
   }
 
 });
@@ -105,12 +105,20 @@ router.post('/verification', async function(req, res, next) {
        sotreResult = await singupStore(SIS.firstName, SIS.lastName, SIS.address, SIS.phone, SIS.id,SIS.password,SIS.birth);    
 
       if(sotreResult==0){
-           delete req.session.signup;
-           console.log(SIS.id);
-           res.send("세션삭제 완료");
-           console.log(SIS.id);
-           
+        req.session.destroy((err)=>{
+          try{
+            req.session;
+            
+            res.send('session destroied,').clearCookie(req.sessionID);
+
+          }catch{
+            console.error(err);
+            
           }
+        });
+          }
+
+          
       }else{
         console.error("아이디가 중복입니다. 처음부터 다시 회원가입 해 주세요");
         
