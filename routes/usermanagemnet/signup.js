@@ -102,17 +102,14 @@ router.post('/verification', async function(req, res, next) {
         SIS.password = hashPassword.get_hashed_password(SIS.password);
         
         
-        sotreResult = await singupStore(SIS.firstName, SIS.lastName, SIS.address, SIS.phone, SIS.id,SIS.password,SIS.birth);    
-          if(sotreResult==0){
-            req.session.signup.destroy(
-              (err) =>{
-                 if (err) {
-                     console.log('세션 삭제시 에러');
-                     return;
-                 }
-                 console.log('세션 삭제');
-                 res.redirect('/');
-             });
+       sotreResult = await singupStore(SIS.firstName, SIS.lastName, SIS.address, SIS.phone, SIS.id,SIS.password,SIS.birth);    
+
+      if(sotreResult==0){
+           delete req.session.signup;
+           console.log(SIS.id);
+           res.send("세션삭제 완료");
+           console.log(SIS.id);
+           
           }
       }else{
         console.error("아이디가 중복입니다. 처음부터 다시 회원가입 해 주세요");
