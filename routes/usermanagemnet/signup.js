@@ -29,8 +29,9 @@ mailer.extend(app, {
   }
 });
 
-router.post('/' ,function(req, res, next) {
+router.post('/' ,async function(req, res, next){
   let id = req.body.id;
+  let duplicateResult = await duplicate(id);
   let firstName =req.body.firstName;
   let lastName =req.body.lastName;
   let password =req.body.password;
@@ -40,31 +41,37 @@ router.post('/' ,function(req, res, next) {
   let tempCode = new veri();
   let verificationCode =  tempCode.getVerificationCode();
   
- if(duplicate(id)==0){
- 
-  req.session.signup={
-    id: id,
-    firstName: firstName,
-    lastName: lastName, 
-    phone:phone,
-    address: address, 
-    password: password,
-    tempCode:verificationCode,
-    birth: birth
-}
-  console.log(process.env.MAILAR_ID);
   
-  app.mailer.send('email', {
-    to: id, 
-    from: '"no-reply" <no-reply@example.com>',
-    subject: '회원가입 인증코드',
-    tempCode:verificationCode,
-   }, function (err) {
-    if (err) {
-     // handle errorconsole.log(err);
-     res.send(err);
-     return;
+  // console.log(duplicate(id) + Date.now());
+  console.log(duplicateResult);
+  
+
+  if(duplicateResult==0){
+ 
+    req.session.signup={
+      id: id,
+      firstName: firstName,
+      lastName: lastName, 
+      phone:phone,
+      address: address, 
+      password: password,
+      tempCode:verificationCode,
+      birth: birth
     }
+ 
+  
+    app.mailer.send('email', {
+     to: id, 
+     from: '"no-reply" <no-reply@example.com>',
+     subject: '회원가입 인증코드',
+     tempCode:verificationCode,
+    }, 
+    function (err) {
+     if (err) {
+      // handle errorconsole.log(err);
+      res.send(err);
+      return;
+     }
     res.render('form', { title: '확인',
                         id: id,
                         firstName: firstName,
@@ -74,32 +81,35 @@ router.post('/' ,function(req, res, next) {
                         password: password,
                         tempCode:verificationCode
                          });
-   });
+                        });
   }else{
-    alert('id가 중복입니다.');
+    console.log('id중복');
+    
     res.redirect('/');
   }
 
 });
 
-router.post('/verification', function(req, res, next) {
+router.post('/verification', async function(req, res, next) {
   let SIS = req.session.signup;
+  let id = SIS.id;
   let temp = req.body.num;
   let confirm = SIS.tempCode;
-   
+  let duplicateResult = await duplicate(id);
   if(temp == confirm){
 
-      if(duplicate(id) == 0){
-        SIS.password = hashPassword.get_hashed_password(SIS.password).then(
-        sotreResult =  singupStore(SIS.firstName, SIS.lastName, SIS.address, SIS.phone, SIS.id,SIS.password,SIS.birth))    
+      if(duplicateResult == 0){
+        SIS.password = hashPassword.get_hashed_password(SIS.password);
+        
+        
+        sotreResult = await singupStore(SIS.firstName, SIS.lastName, SIS.address, SIS.phone, SIS.id,SIS.password,SIS.birth);    
           if(sotreResult==0){
-            req.session.destroy(
+            req.session.signup.destroy(
               (err) =>{
                  if (err) {
                      console.log('세션 삭제시 에러');
                      return;
                  }
-                 req.session.signup;
                  console.log('세션 삭제');
                  res.redirect('/');
              });

@@ -30,6 +30,8 @@ exports.duplicate = async (id)=>{
         let res = await conn.query('CALL DUPL_CHECK(?,@result);SELECT @result',[id]);
         let values = res[1][0]['@result'];
         conn.release();
+        console.log(values);
+        
         return values;
     } catch(err){
         console.log(err);
@@ -40,25 +42,21 @@ exports.duplicate = async (id)=>{
 exports.singupStore = async (fn,ln,addr,phn,id,pw,bdt) =>{
     let conn = await pool.getConnection();
     try{
-    let res = conn.query('CALL SIGN_UP(?,?,?,?,?,?,?)',[fn,ln,addr,phn,id,pw,bdt]);
+    let res = await conn.query('CALL SIGN_UP(?,?,?,?,?,?,?,@result);SELECT @result',[fn,ln,addr,phn,id,pw,bdt]);
+    console.log(res);
+    
     let values = res[1][0]['@result'];
     conn.release();
-    return values;
+    console.log(values);
     
+    return values;
     }catch(err){
     console.error(err);
     conn.release();
     }
 }
 
-exports.signin = (id,pw) =>{
-    conn.query('CALL LOGIN(?,?)',[id,pw],(err,result,fields)=>{
-        try{
-            console.log(result[0]);
-            
-        }catch(err){
-            console.error(err);
-            
-        }
-    })
-}
+exports.signin = async (id,pw) =>{
+   let conn = conn.query('CALL LOGIN(?,?,@result);SELECT @result',[id,pw]);
+        
+    }
