@@ -6,14 +6,15 @@ const gethashPassword = new hash();
 
 const app =express();
 
-router.post('/',isLoggedIn,(req,res, next)=>{
+router.post('/',isLoggedIn, async (req,res, next)=>{
    let id = req.dody.id;
    let pass = req.body.passoword;
    let hashPassword = gethashPassword.get_hashed_password(pass);
 
-    let signinResult = signin(id,hashPassword);
-    
-    
+    let signinResult = await signin(id,hashPassword);
+
+   
+   
    
     
 });
