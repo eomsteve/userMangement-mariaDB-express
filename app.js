@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const sessionSignup = require('express-session');
+const session = require('express-session');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -25,7 +25,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.use(sessionSignup({
+app.use(session({
   secret: 'secret',
   resave: false,
   saveUninitialized: true,
@@ -58,5 +58,5 @@ app.use(function(err, req, res, next) {
 // app.listen('8080',() => {
 //     console.log('server is ready');
 // })
-//this app.listen is for debugging
+//this app.listen is for deg
 module.exports = app;

@@ -46,7 +46,13 @@ exports.singupStore = async (fn,ln,addr,phn,id,pw,bdt) =>{
     console.log(res);
     
     let values = res[1][0]['@result'];
-    conn.release();
+    try {
+        conn.release();
+    } catch (error) {
+        values = 1;
+        return values;
+    }
+    
     console.log(values);
     
     return values;
