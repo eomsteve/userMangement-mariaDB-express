@@ -107,7 +107,7 @@ router.post('/verification', async function(req, res, next) {
       if(sotreResult==0){
         req.session.destroy((err)=>{
           try{
-            req.session;
+            req.session["signup"];
             
             res.send('session destroied,').clearCookie(req.sessionID);
 

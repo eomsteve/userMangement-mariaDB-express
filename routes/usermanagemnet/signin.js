@@ -15,7 +15,7 @@ router.post('/', async (req,res, next)=>{
     let dbPass = await passwordCheck(id);
     if(dbPass.result ==0){
 
-        let compareResult = hashPassword.check_password(pass,dbpass.password);
+        let compareResult = hashPassword.check_password(pass,dbPass.password);
         if(compareResult){
         let signinResult = await wSignin(id);
           if(signinResult.result ==0){

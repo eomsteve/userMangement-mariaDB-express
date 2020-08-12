@@ -4,7 +4,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const session = require('express-session');
-
+const FileStore = require('session-file-store')(session);
+ 
+const fileStoreOptions = {};
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const signupRouter = require('./routes/usermanagemnet/signup');
@@ -30,7 +32,7 @@ app.use(session({
   secret: 'secret',
   resave: false,
   saveUninitialized: true,
-  
+  store: new FileStore(fileStoreOptions),
   cookie:{maxAge:1000*60*30,
   httpOnly:false,
 },

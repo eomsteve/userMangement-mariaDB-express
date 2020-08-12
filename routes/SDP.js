@@ -13,13 +13,13 @@ const pool  = mariadb.createPool({
 exports.passwordCheck = async (id) =>{
     let conn = await pool.getConnection();
     try{
-        let res = await conn.query('CALL DUPL_CHECK(?,@result,@passowrd);SELECT @result,@password',[id]);
+        let res = await conn.query('CALL FIND_PW(?,@pw,@result);SELECT @pw,@result',[id]);
         let values = {
-                password:res[1][0]['@password'],
+                password:res[1][0]['@pw'],
                 result:res[1][0]['@result']
             };
         conn.release();
-        console.log(values);
+        console.log(values.password);
         return values;
     } catch(err){
         console.log(err);
@@ -67,15 +67,15 @@ exports.singupStore = async (fn,ln,addr,phn,id,pw,bdt) =>{
     }
 }
 
-exports.wSignin = async (id,pw) =>{
+exports.wSignin = async (id) =>{
    let conn = await pool.getConnection();
-   let res = await conn.query('CALL W_LOGIN(?,?,@result,@rwnsc,@rusn);SELECT @result,@rwnsc,@rusn;',[id,pw]);
+   let res = await conn.query('CALL W_LOGIN(?,@result,@rwnsc,@rusn);SELECT @result,@rwnsc,@rusn;',[id]);
    try{
     conn.release();
     return values = {
-        result:res[1][0]['@result'],
-        wnsc:res[1][0]['@rwnsc'],
-        usn:res[1][0]['@rusn']
+        result:res[2][0]['@result'],
+        wnsc:res[2][0]['@rwnsc'],
+        usn:res[2][0]['@rusn']
     }
     
    }catch(err){
