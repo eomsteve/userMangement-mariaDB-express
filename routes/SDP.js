@@ -62,7 +62,24 @@ exports.singupStore = async (fn,ln,addr,phn,id,pw,bdt) =>{
     }
 }
 
-exports.signin = async (id,pw) =>{
-   let conn = conn.query('CALL LOGIN(?,?,@result);SELECT @result',[id,pw]);
+exports.wSignin = async (id,pw) =>{
+   let conn = await pool.getConnection();
+   let res = await conn.query('CALL W_LOGIN(?,?,@result,@rwnsc,@rusn);SELECT @result,@rwnsc,@rusn;',[id,pw]);
+   try{
+    conn.release();
+    return values = {
+        result:res[1][0]['@result'],
+        wnsc:res[1][0]['@rwnsc'],
+        usn:res[1][0]['@rusn']
+    }
+    
+   }catch(err){
+    console.error(err);
+    conn.release(
+        
+    );
+
+   }
+    
         
     }
