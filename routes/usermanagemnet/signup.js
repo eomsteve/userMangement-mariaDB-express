@@ -105,11 +105,12 @@ router.post('/verification', async function(req, res, next) {
        sotreResult = await singupStore(SIS.firstName, SIS.lastName, SIS.address, SIS.phone, SIS.id,SIS.password,SIS.birth);    
 
       if(sotreResult==0){
+        
         req.session.destroy((err)=>{
           try{
             req.session["signup"];
-            
-            res.send('session destroied,').clearCookie(req.sessionID);
+            res.clearCookie(req.sessionID);
+            res.send('session destroied,');
 
           }catch{
             console.error(err);

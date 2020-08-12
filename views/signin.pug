@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  h1  SIGNIN
+  div
+    p 
+    form(action="/signin" method="POST")  
+      input(type="text" name="id" placeholder="이곳에 ID를 적어주세요 :) ")
+      input(type="text" name="password" placeholder="이곳에 비밀번호를 적어주세요 :) ")
+      button(id="verti" type="submit" name="verti") 로그인

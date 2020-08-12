@@ -1,12 +1,16 @@
 const express = require('express');
 const hash2 = require('../../public/javascripts/hashPassword.js');
 const {wSignin,passwordCheck} = require('../SDP.js');
+const path = require('path');
 // const {isLoggedIn} = require('../middleware.js');
 let hashPassword = new hash2();
 
 const app =express();
 
 const router = express.Router();
+
+app.set('views', path.join('/Users/seonghyuneom/dev/userMangement/', 'views'));
+app.set('view engine', 'pug');
 
 
 router.post('/', async (req,res, next)=>{
@@ -41,6 +45,8 @@ router.post('/', async (req,res, next)=>{
   
 });
 
-router.get('/')
+router.get('/',(req, res, next)=>{
+    res.render('signin');
+})
 
 module.exports = router;
