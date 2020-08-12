@@ -10,17 +10,22 @@ const pool  = mariadb.createPool({
     
 });
 
-exports.passwordCheck = (password) =>{
-
-    conn.query(`CALL PASSWORD_CHECK(?)`,password,(err,result,fields)=>{
-        try{
-            console.log(result[0]);
-            console.log('passowrd check, it match');
-        }catch(err){
-            console.error(err);
-            
-        }
-    });
+exports.passwordCheck = async (id) =>{
+    let conn = await pool.getConnection();
+    try{
+        let res = await conn.query('CALL DUPL_CHECK(?,@result,@passowrd);SELECT @result,@password',[id]);
+        let values = {
+                password:res[1][0]['@password'],
+                result:res[1][0]['@result']
+            };
+        conn.release();
+        console.log(values);
+        return values;
+    } catch(err){
+        console.log(err);
+        conn.release();
+    }
+   
 
 }
 
