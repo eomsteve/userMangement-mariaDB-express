@@ -88,3 +88,26 @@ exports.wSignin = async (id) =>{
     
         
     }
+
+
+exports.aSignin = async (id) =>{
+    let conn = await pool.getConnection();
+    let res = await conn.query('CALL M_LOGIN(?,@result,@ransc,@rusn);SELECT @result,@ransc,@rusn;',[id]);
+    try{
+     conn.release();
+     return values = {
+         result:res[2][0]['@result'],
+         ansc:res[2][0]['@ransc'],
+         usn:res[2][0]['@rusn']
+     }
+     
+    }catch(err){
+     console.error(err);
+     conn.release(
+         
+     );
+ 
+    }
+     
+         
+     }
