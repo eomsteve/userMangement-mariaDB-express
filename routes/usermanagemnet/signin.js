@@ -1,6 +1,6 @@
 const express = require('express');
 const hash2 = require('../../public/javascripts/hashPassword.js');
-const {wSignin,passwordCheck} = require('../SDP.js');
+const {wSignin,aSignin,passwordCheck} = require('../SDP.js');
 const path = require('path');
 // const {isLoggedIn} = require('../middleware.js');
 let hashPassword = new hash2();
@@ -13,15 +13,22 @@ app.set('views', path.join('/Users/seonghyuneom/dev/userMangement/', 'views'));
 app.set('view engine', 'pug');
 
 
-router.post('/', async (req,res, next)=>{
+router.post('/:type', async (req,res, next)=>{
     let id = req.body.id;
+    let type = req.params.type;
     let pass = await req.body.password;
     let dbPass = await passwordCheck(id);
+    let signinResult;
     if(dbPass.result ==0){
 
         let compareResult = hashPassword.check_password(pass,dbPass.password);
         if(compareResult){
-        let signinResult = await wSignin(id);
+            if(type == "web"){
+                 signinResult = await wSignin(id);
+            }else{
+                 signinResult = await aSignin(id);
+            }
+        
           if(signinResult.result ==0){
            req.session.signin={
             usn: signinResult.usn,
