@@ -111,3 +111,21 @@ exports.aSignin = async (id) =>{
      
          
      }
+
+
+
+exports.signout = async (usn) =>{
+    let conn = await pool.getConnection();
+    let res = await conn.query('CALL LOGOUT(?,@result);SELECT @result;',[usn]);
+    try{
+     conn.release();
+     return values = res[2][0]['@result'];
+     
+    }catch(err){
+     console.error(err);
+     conn.release();
+ 
+    }
+     
+         
+     }

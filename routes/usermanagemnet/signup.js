@@ -90,6 +90,12 @@ router.post('/' ,async function(req, res, next){
 
 });
 
+router.post('/duplicateid', async (req, res) => {
+  let idCheck = req.body.id;
+  let duplicateResult = await duplicate(idCheck);
+  return duplicateResult;
+});
+
 router.post('/verification', async function(req, res, next) {
   let SIS = req.session.signup;
   let id = SIS.id;
