@@ -44,7 +44,7 @@ router.post('/:type', async (req,res, next)=>{
            
        }    
     }else{
-        console.error("없는 유저입니다");
+        console.error("없는 유저입니다.");
         
     }
     
