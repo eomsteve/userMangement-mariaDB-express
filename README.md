@@ -1,6 +1,6 @@
 # userMangement-mariaDB-express
 
-<h1> maria db 요약</h1>
+<h1> maria db 커넥트</h1>
 const mariadb = require('mariadb');
 var pool  = mariadb.createPool({
     connectionLimit : 10,
